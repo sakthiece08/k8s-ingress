@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-api-service
+spec:
+  type: ClusterIP
+  selector:
+    app: product-api-pod
+  ports:
+    - name: app-port-mapping
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-api-deployment
+  labels:
+    app: product-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-api-pod
+  template:
+    metadata:
+      labels:
+        app: product-api-pod
+    spec:
+      containers:
+       - name: product-api
+         image: sakthiece08/product-api:1.0
+         ports:
+           - containerPort: 8080

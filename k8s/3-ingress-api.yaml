@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: instacart-api-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: teqmonic.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/products(/|$)(.*)"
+            backend:
+              service:
+                name: product-api-service
+                port:
+                  number: 80
+          - pathType: ImplementationSpecific
+            path: "/promotions(/|$)(.*)"
+            backend:
+              service:
+                name: promotion-api-service
+                port:
+                  number: 80
